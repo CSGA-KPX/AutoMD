@@ -283,6 +283,19 @@ ASL = "$receptor_ASL"
 st2
         $SCHRODINGER/run analyze_simulation.py ${current_cms} ${current_trajectory} ${current_cms%%-out.cms}_RadiusGyration.st2 analyse_Rg.st2
         $SCHRODINGER/run st2csv.py ${current_cms%%-out.cms}_RadiusGyration.st2 ${current_cms%%-out.cms}_RadiusGyration.csv
+    elif [ ${running_mode} == "RMSD" ]; then
+        cat << st2 > analyse_RMSD.st2
+Keywords = [
+{RMSD = {
+ASL = "$receptor_ASL"
+Frame = 0
+Type = "Protein"
+}
+}
+]
+st2
+        $SCHRODINGER/run analyze_simulation.py ${current_cms} ${current_trajectory} ${current_cms%%-out.cms}_RMSD.st2 analyse_RMSD.st2
+        $SCHRODINGER/run st2csv.py ${current_cms%%-out.cms}_RMSD.st2 ${current_cms%%-out.cms}_RMSD.csv
     elif [ ${running_mode} == "SiteMap" ];then
         ${Desmond}/run trajectory_binding_site_volumes.py -HOST ${CPU_HOST} -superimpose -protein_asl "${receptor_ASL}" -sitemap_all "all" -sitemap_options "maxsites:${running_mode_array[1]}" -omae "${job_name}_${task}_OUT.mae" -ocsv "${job_name}_${task}_OUT.csv" "${current_cms}" trajectory
     elif [ ${running_mode} == "PocketMonitor" ];then
