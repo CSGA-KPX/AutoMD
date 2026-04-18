@@ -432,6 +432,15 @@ ANALY
 }
 
 function assign_opls(){
+# ADD IT HERE
+for line in ${waterlist[@]};
+do
+if [ "$solvent" == "$line" ];then
+  export water="water = ${solvent}"
+  break
+fi;
+done
+
 cat<<MSJ2 >> AutoMD.msj
 assign_forcefield {
   forcefield = ${ffid}
@@ -870,11 +879,6 @@ if [ "$constraint"x == "true"x ];then
 else
     export constraintDescription="restrain = none"
 fi
-for line in ${waterlist[@]}; do
-if [ "$solvent" == "$line" ];then
-  export water="water = ${solvent}"
-  break
-fi; done
 
 ################################
 ## Assign Force Field
